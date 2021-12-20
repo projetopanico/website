@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="pt-BR">
+	<head>
+    	<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<link rel="stylesheet" href="timesheet.min.css">
+		<link rel="stylesheet" href="timesheet-white.min.css">
+
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<script src="timesheet.min.js" type="text/javascript"></script>
+		<script src="quadros.js" type="text/javascript"></script>
+		<script src="programas.js" type="text/javascript"></script>
+
+		<!-- docs https://www.cssscript.com/feature-rich-event-calendar -->
+		<link rel="stylesheet" href="calendar.js/src/calendarjs.css" />
+		<script src="calendar.js/src/calendarjs.js"></script>
+
+		<script type="text/javascript">
+			window.onload = (event) => {
+
+				//new Timesheet('timesheet-default-redetv', 2003, 2012, quadros_redetv);
+
+				//new Timesheet('timesheet-default-band', 2012, 2017, quadros_band);
+
+				var calendarInstance = new calendarJs("myCalendar", { 
+					exportEventsEnabled: false, 
+    				manualEditingEnabled: false,
+					fullScreenModeEnabled: false,
+					tooltipsEnabled: false,
+					dayNames: [ "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo" ],
+					dayHeaderNames: [ "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom" ],
+					monthNames: [ "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro" ],
+					//visibleDays: [4, 6]
+				});
+				calendarInstance.addEvents(handleEventsArray(programas));
+				calendarInstance.setCurrentDisplayDate("2003-09-28");
+				calendarInstance.refresh();
+
+			};
+
+			function handleEventsArray(events)
+			{
+				events.forEach(element => {
+					element["colorText"] = "black";
+
+					if(element["title"].startsWith("Completo")) element["color"] = "green";
+					else if(element["title"].startsWith("Incompleto")) element["color"] = "yellow";
+					else if(element["title"].startsWith("Sem Dados")) element["color"] = "red";
+
+					element["from"] = element["from"] + "T00:00:00";
+					element["to"] = element["from"]; 
+				});
+				return events;
+			};
+			
+		</script>
+
+    	<title>Projeto Pânico</title>
+  	</head>
+
+	<body>
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	  		<a class="navbar-brand" href="#">Projeto Pânico</a>
+	  		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+	    		<span class="navbar-toggler-icon"></span>
+	  		</button>
+	  		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+	  			<div class="navbar-nav">
+	  	    		<a class="nav-item nav-link" href="#">Programas <span class="sr-only">(current)</span></a>
+	  	    		<a class="nav-item nav-link" href="#">Quadros</a>
+	  	  		</div>
+	  		</div>
+		</nav>
+
+		<div class="white">
+			<p class="">Rede TV</p>
+			<div id="timesheet-default-redetv"></div>
+
+			<p class="">Band</p>
+			<div id="timesheet-default-band"></div>
+		</div>
+
+		<div id="myCalendar"></div>
+
+	</body>
+</html>
